@@ -24,7 +24,7 @@ ONE_MONTH_AGO = (datetime.now() - timedelta(days=30)).strftime("%Y/%m/%d")
 QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neural Networks OR Predictive Analytics) " \
         f"AND (J Am Coll Cardiol[Journal] OR Circulation[Journal] OR Eur Heart J[Journal] OR JAMA Cardiol[Journal] " \
         f"OR Nat Cardiovasc Res[Journal] OR Heart Rhythm[Journal] OR Europace[Journal] OR JACC Clin Electrophysiol[Journal] " \
-        f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal] OR Nat Med[Journal] OR NPJ Digit Med[Journal]) " \
+        f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal] OR Nat Med[Journal]) " \
         f"AND ({ONE_MONTH_AGO}[PDAT] : {datetime.now().strftime('%Y/%m/%d')}[PDAT])"
 
 # Fetch articles from PubMed
