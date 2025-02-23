@@ -28,7 +28,7 @@ QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neura
         f"AND ({ONE_MONTH_AGO}[PDAT] : {datetime.now().strftime('%Y/%m/%d')}[PDAT])"
 
 # Fetch articles from PubMed
-def fetch_pubmed_articles(max_results=20):
+def fetch_pubmed_articles(max_results=40):
     params = {
         "db": "pubmed",
         "term": QUERY,
