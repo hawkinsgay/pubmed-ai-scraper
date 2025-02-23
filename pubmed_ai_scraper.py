@@ -24,7 +24,7 @@ ONE_MONTH_AGO = (datetime.now() - timedelta(days=30)).strftime("%Y/%m/%d")
 QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neural Networks OR Predictive Analytics) " \
         f"AND (J Am Coll Cardiol[Journal] OR Circulation[Journal] OR Eur Heart J[Journal] OR JAMA Cardiol[Journal] " \
         f"OR Nat Cardiovasc Res[Journal] OR Heart Rhythm[Journal] OR Europace[Journal] OR JACC Clin Electrophysiol[Journal] " \
-        f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal]) " \
+        f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal] OR Nat Med[Journal] OR NPJ Digit Med[Journal]) " \
         f"AND ({ONE_MONTH_AGO}[PDAT] : {datetime.now().strftime('%Y/%m/%d')}[PDAT])"
 
 # Fetch articles from PubMed
@@ -60,16 +60,18 @@ def fetch_article_details(article_ids):
 def parse_article_details(xml_data):
     articles = []
     root = ET.fromstring(xml_data)
-    for article in root.findall(".//PubmedArticle"):
+    for article in root.findall(".//PubmedArticle"): 
         title = article.find(".//ArticleTitle").text if article.find(".//ArticleTitle") is not None else "No Title"
         abstract = article.find(".//AbstractText").text if article.find(".//AbstractText") is not None else "No Abstract"
         pub_date = article.find(".//PubDate/Year").text if article.find(".//PubDate/Year") is not None else "Unknown Date"
         journal = article.find(".//Journal/Title").text if article.find(".//Journal/Title") is not None else "Unknown Journal"
+        article_link = f"https://pubmed.ncbi.nlm.nih.gov/{article.find('.//PMID').text}" if article.find('.//PMID') is not None else "No Link"
         articles.append({
             "title": title,
             "abstract": abstract,
             "pub_date": pub_date,
-            "journal": journal
+            "journal": journal,
+            "link": article_link
         })
     return articles
 
@@ -80,6 +82,7 @@ def format_results(articles):
         email_content += f"Title: {article['title']}\n"
         email_content += f"Journal: {article['journal']}\n"
         email_content += f"Published: {article['pub_date']}\n"
+        email_content += f"Link: {article['link']}\n"
         email_content += f"Abstract: {article['abstract'][:500]}...\n"  # Limit abstract to 500 characters
         email_content += "-" * 80 + "\n"
     return email_content
@@ -88,13 +91,13 @@ def format_results(articles):
 def send_email(formatted_content, recipient_email):
     sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
     sender_email = os.getenv("SENDER_EMAIL")
-
+    
     message = Mail(
         from_email=sender_email,
         to_emails=recipient_email,
         subject="Weekly AI in Cardiology Research Digest",
         plain_text_content=formatted_content)
-
+    
     try:
         sg = SendGridAPIClient(sendgrid_api_key)
         response = sg.send(message)
