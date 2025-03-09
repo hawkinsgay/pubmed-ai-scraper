@@ -21,7 +21,7 @@ DETAILS_API_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
 
 # Define AI-related query terms and journals
 ONE_MONTH_AGO = (datetime.now() - timedelta(days=30)).strftime("%Y/%m/%d")
-QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neural Networks OR Predictive Analytics OR Large Language Models)" \
+QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neural Networks OR Digital Health OR Large Language Models)" \
         f"AND (J Am Coll Cardiol[Journal] OR Circulation[Journal] OR Eur Heart J[Journal] OR JAMA Cardiol[Journal] " \
         f"OR Nat Cardiovasc Res[Journal] OR Heart Rhythm[Journal] OR Europace[Journal] OR JACC Clin Electrophysiol[Journal] " \
         f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal] OR Nat Med[Journal]) " \
