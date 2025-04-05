@@ -83,7 +83,8 @@ def format_results(articles):
         email_content += f"Journal: {article['journal']}\n"
         email_content += f"Published: {article['pub_date']}\n"
         email_content += f"Link: {article['link']}\n"
-        email_content += f"Abstract: {article['abstract'][:500]}...\n"  # Limit abstract to 500 characters
+        abstract_snippet = article['abstract'][:500] + '...' if article['abstract'] else 'No Abstract Available'
+        email_content += f"Abstract: {abstract_snippet}\n"
         email_content += "-" * 80 + "\n"
     return email_content
 
