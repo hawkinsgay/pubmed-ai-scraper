@@ -27,6 +27,7 @@ QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neura
         f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal] OR Nat Med[Journal]) " \
         f"AND ({ONE_MONTH_AGO}[PDAT] : {datetime.now().strftime('%Y/%m/%d')}[PDAT])"
 
+"""
 # Fetch articles from PubMed
 def fetch_pubmed_articles(max_results=40):
     params = {
@@ -54,6 +55,55 @@ def fetch_article_details(article_ids):
         return parse_article_details(response.text)
     else:
         print("Error fetching article details.")
+        return []
+"""
+
+# Fetch articles from PubMed
+def fetch_pubmed_articles(max_results=40):
+    params = {
+        "db": "pubmed",
+        "term": QUERY,
+        "retmax": max_results,
+        "retmode": "json"
+    }
+    if NCBI_API_KEY: # Add API key if available
+        params["api_key"] = NCBI_API_KEY
+
+    # Add a User-Agent header (good practice)
+    headers = {'User-Agent': 'PubMedAIArticleScraper/1.0 (contact@example.com)'} # Replace with your contact info
+
+    response = requests.get(PUBMED_API_URL, params=params, headers=headers)
+    if response.status_code == 200:
+        # Check if the 'esearchresult' key exists and 'idlist' is in it
+        response_json = response.json()
+        if "esearchresult" in response_json and "idlist" in response_json["esearchresult"]:
+            return response_json["esearchresult"]["idlist"]
+        else:
+            print(f"No 'esearchresult' or 'idlist' in PubMed response. Full response: {response_json}")
+            return []
+    else:
+        print(f"Error fetching articles from PubMed. Status Code: {response.status_code}")
+        print(f"Response Text: {response.text}") # Print the raw response for more clues
+        return []
+
+# Fetch details for given article IDs
+def fetch_article_details(article_ids):
+    params = {
+        "db": "pubmed",
+        "id": ",".join(article_ids),
+        "retmode": "xml"
+    }
+    if NCBI_API_KEY: # Add API key if available
+        params["api_key"] = NCBI_API_KEY
+    
+    headers = {'User-Agent': 'PubMedAIArticleScraper/1.0 (contact@example.com)'} # Use the same User-Agent
+
+    response = requests.get(DETAILS_API_URL, params=params, headers=headers)
+    if response.status_code == 200:
+        return parse_article_details(response.text)
+    else:
+        print(f"Error fetching article details. Status Code: {response.status_code}")
+        print(f"Response Text: {response.text}") # Print the raw response for more clues
         return []
 
 # Parse XML response to extract article details
