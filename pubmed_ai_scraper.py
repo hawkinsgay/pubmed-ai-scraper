@@ -9,11 +9,13 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+NCBI_API_KEY = os.getenv("NCBI_API_KEY")
 
 # Debugging: Print loaded environment variables
 print("SENDGRID_API_KEY Loaded:", os.getenv("SENDGRID_API_KEY") is not None)
 print("SENDER_EMAIL:", os.getenv("SENDER_EMAIL"))
 print("RECIPIENT_EMAIL:", os.getenv("RECIPIENT_EMAIL"))
+print("NCBI_API_KEY Loaded:", NCBI_API_KEY is not None)
 
 # PubMed API base URL
 PUBMED_API_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
