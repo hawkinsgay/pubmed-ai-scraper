@@ -29,7 +29,7 @@ QUERY = f"(Artificial Intelligence OR Machine Learning OR Deep Learning OR Neura
         f"OR Circ Arrhythm Electrophysiol[Journal] OR J Cardiovasc Electrophysiol[Journal] OR Nat Med[Journal]) " \
         f"AND ({ONE_MONTH_AGO}[PDAT] : {datetime.now().strftime('%Y/%m/%d')}[PDAT])"
 
-"""
+
 # Fetch articles from PubMed
 def fetch_pubmed_articles(max_results=40):
     params = {
@@ -58,8 +58,8 @@ def fetch_article_details(article_ids):
     else:
         print("Error fetching article details.")
         return []
-"""
 
+"""
 # Fetch articles from PubMed
 def fetch_pubmed_articles(max_results=40):
     params = {
@@ -107,7 +107,7 @@ def fetch_article_details(article_ids):
         print(f"Error fetching article details. Status Code: {response.status_code}")
         print(f"Response Text: {response.text}") # Print the raw response for more clues
         return []
-
+"""
 # Parse XML response to extract article details
 def parse_article_details(xml_data):
     articles = []
@@ -167,3 +167,4 @@ if __name__ == "__main__":
         send_email(formatted_email, os.getenv("RECIPIENT_EMAIL"))
     else:
         print("No articles found in the last month.")
+
